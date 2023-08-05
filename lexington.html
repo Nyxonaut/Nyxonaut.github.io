@@ -3,51 +3,107 @@
   <head>
     <title>Dapper Doodle Lexington</title>
     <meta name="viewport" content="width=device-width,initial-scale=1" >
-  <link href="style.css" rel="stylesheet">
+  <link href="stylebeta.css" rel="stylesheet">
   </head>
+
   <body>
-    <header>
-      <nav>
-        <ul>
-          <li><a href="#storehours">Store Hours</a></li>
-          <li><a href="#services">Services</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-    <h1>Dapper Doodle<br />Lexington, KY</h1>
+    <h1>Dapper Doodle<br />Lexington, KY</h1> 
     <h2 id="storehours">Store Hours: Monday - Saturday : 9 AM to 4 PM<br />Sunday: Closed</h2>
     <h3>Walk in Services Welcome</h3>
-    <h3 id="services">Package Pricelist</h3>
+
+    <h3>Package Pricelist</h3>
     <div class="servicecards">
-      <div class="rectangle">
-        <div class="circle"><h2 class = "size">Size</h2></div>
-        <p class="textone">We have a scale on site for your convenience!</p>
-      </div>
-      <div class="rectangle">
-        <div class="circle"><h2 class = "size">Full Groom</h2></div>
-        <p class="textone">Bath package + Full body trim!</p>
-      </div>
-      <div class="rectangle">
-        <div class="circle"><h2 class = "size">Bath</h2></div>
-        <p class="textone">Bath, Brush, Blow Dry, Nail Trim + Grind, Anal Gland Expression, Ears Cleaned</p>
-      </div>
-      <div class="rectangle">
-        <div class="circle"><h2 class = "size">Add Ons</h2></div>
-        <p class="textone">Add ons to make your pup shine!</p>
-      </div>
+    <div class="rectangle">
+      <div class="circle"><h2 class = "size">Size</h2></div>
+      <p class="textone">We have a scale on site for your convenience!</p>
     </div>
-    <div class="groomers">
-      <div class="groomercard">
-        <h2 class="groomer-hunter">Hunter Thomas Hill</h2>
-        <img class="groomer-hunter-img" alt="Hunter Thomas Hill Photo" src="hunter.jpeg">
-        <div class="hunter-gallery">
-          <img src="">
-        </div> <!--hunter-gallery div class-->
-        <p class="hunterdesc">Hunter has been grooming dogs in the central KY area for half a decade, but has loved dogs her entire life.</p>
-        </div>
-      </div>
+     <div class="rectangle">
+      <div class="circle"><h2 class = "size">Full Groom</h2></div>
+      <p class="textone">Bath package + Full body trim!</p>
     </div>
-    </main>
-  </body>
+    <div class="rectangle">
+      <div class="circle"><h2 class = "size">Bath</h2></div>
+      <p class="textone">Bath, Brush, Blow Dry, Nail Trim + Grind, Anal Gland Expression, Ears Cleaned</p>
+    </div>
+    <div class="rectangle">
+      <div class="circle"><h2 class = "size">Add Ons</h2></div>
+      <p class="textone">Add ons to make your pup shine!</p>
+    </div>
+    </div> <!--servicecards class-->
+
+    <!--Groomer Information Cards-->
+    <div id="groomer-root"></div>
+    <div id="groomer-root2"></div>
+
+
+    <!-- React Libraries -->
+    <script crossorigin src="https://unpkg.com/react@17/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!--React Components-->
+    <script type="text/babel">
+        class GroomerCard extends React.Component {
+            constructor(props) {
+                super(props);
+                this.state = {
+                    currentSlide: 0
+                };
+            }
+    
+            nextSlide() {
+                this.setState(prevState => ({
+                    currentSlide: (prevState.currentSlide + 1) % this.props.carouselImages.length
+                }));
+            }
+    
+            prevSlide() {
+                this.setState(prevState => ({
+                    currentSlide: (prevState.currentSlide - 1 + this.props.carouselImages.length) % this.props.carouselImages.length
+                }));
+            }
+    
+            render() {
+                return (
+                    <div className="groomer-card">
+                        <div className="groomer-name">{this.props.name}</div>
+                        <img className="groomer-headshot" src={this.props.headshot} alt={`${this.props.name} Headshot`} />
+                        <div className="carousel">
+                            <img src={this.props.carouselImages[this.state.currentSlide]} alt="Groom Image" />
+                            <div className="carousel-controls">
+                                <button className="carousel-button" onClick={() => this.prevSlide()}>&lt;</button>
+                                <button className="carousel-button" onClick={() => this.nextSlide()}>&gt;</button>
+                            </div>
+                        </div>
+                        <div className="groomer-bio">{this.props.bio}</div>
+                        <div className="booking-hours">{this.props.hours}</div>
+                    </div>
+                );
+            }
+        }
+    
+        ReactDOM.render(
+            <GroomerCard 
+                name="Hunter Thomas Hill"
+                headshot="hunter.jpeg"
+                carouselImages={["hunterdog1.jpeg", "hunterdog2.jpeg", "hunterdog3.jpeg"]} 
+                bio="Hunter has been grooming dogs in the central KY area for half a decade, but has loved dogs her entire life."
+                hours="Booking hours go here..."
+            />, 
+            document.getElementById('groomer-root')
+        );
+
+        ReactDOM.render(
+            <GroomerCard   
+                name="Jane Doe"
+                headshot="janedoe.jpeg"
+                carouselImages={["test1.jpeg","test2.jpeg","test3.jpeg"]}
+                bio="Jane Doe has been grooming dogs on Turtle Island since she fell through the hole in the sky."
+                hours="Booking hours are never."
+            />,
+            document.getElementById('groomer-root2')
+        );
+    </script>
+    </body>
 </html>
